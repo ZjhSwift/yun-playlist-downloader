@@ -9,7 +9,7 @@ var extname = require('path').extname;
  * @param  {Cheerio} $ Cheerio instance
  * @return {String} title
  */
-exports.getTitle = function ($) {
+exports.getTitle = function($) {
   return $('h2.f-ff2.f-brk').text();
 };
 
@@ -18,11 +18,11 @@ exports.getTitle = function ($) {
  *
  * @param {Array} [songs] songs
  */
-exports.getSongs = function (songs) {
+exports.getSongs = function(songs) {
   // e.g 100 songs -> len = 3
   var len = String(songs.length).length;
 
-  return songs.map(function (song, index) {
+  return songs.map(function(song, index) {
     return {
       // 歌手
       singer: song.artists[0].name,
@@ -40,7 +40,7 @@ exports.getSongs = function (songs) {
       index: padLeft(String(index + 1), len, '0'),
 
       // rawIndex: 0,1 ...
-      rawIndex: index
+      rawIndex: index,
     };
   });
 };

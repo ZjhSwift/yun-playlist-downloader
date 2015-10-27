@@ -5,7 +5,8 @@
  */
 var playlist = require('./playlist');
 
-exports.getTitle = function ($) {
+
+exports.getTitle = function($) {
   return $('h2.f-ff2').text();
 };
 
