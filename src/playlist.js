@@ -1,28 +1,25 @@
-'use strict';
-
-var padLeft = require('lodash').padLeft;
-var trimLeft = require('lodash').trimLeft;
-var extname = require('path').extname;
+import { padLeft,trimLeft } from 'lodash';
+import {extname} from 'path';
 
 /**
  * get title for a page
  * @param  {Cheerio} $ Cheerio instance
  * @return {String} title
  */
-exports.getTitle = function($) {
+export function getTitle ($) {
   return $('h2.f-ff2.f-brk').text();
-};
+}
 
 /**
  * get songs detail
  *
  * @param {Array} [songs] songs
  */
-exports.getSongs = function(songs) {
+export function getSongs (songs) {
   // e.g 100 songs -> len = 3
-  var len = String(songs.length).length;
+  let len = String(songs.length).length;
 
-  return songs.map(function(song, index) {
+  return songs.map(function (song, index) {
     return {
       // 歌手
       singer: song.artists[0].name,
@@ -40,7 +37,7 @@ exports.getSongs = function(songs) {
       index: padLeft(String(index + 1), len, '0'),
 
       // rawIndex: 0,1 ...
-      rawIndex: index,
+      rawIndex: index
     };
   });
-};
+}

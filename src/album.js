@@ -1,16 +1,11 @@
 'use strict';
 
 /**
- * module dependencies
+ * module dependencies 同playlist
  */
-var playlist = require('./playlist');
+export { getSongs } from './playlist';
 
 
-exports.getTitle = function($) {
+export function getTitle ($) {
   return $('h2.f-ff2').text();
-};
-
-/**
- * 同playlist
- */
-exports.getSongs = playlist.getSongs;
+}

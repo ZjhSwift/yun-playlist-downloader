@@ -1,5 +1,3 @@
-'use strict';
-
 import Promise from 'bluebird';
 import { agent } from 'superagent';
 import 'superagent-bluebird-promise';
@@ -32,12 +30,12 @@ export const types = [{
 /**
  * 获取html
  */
-export let getHtml = async url => {
+export async function getHtml (url) {
   let res = await request
     .get(url)
     .promise();
   return res.text;
-};
+}
 
 /**
  * mormalize url
@@ -46,13 +44,15 @@ export let getHtml = async url => {
  * to
  * http://music.163.com/playlist?id=12583200
  */
-export let normalizeUrl = url => url.replace(/(https?:.*?\/)(#\/)/, '$1');
+export async function normalizeUrl (url) {
+  return url.replace(/(https?:.*?\/)(#\/)/, '$1');
+}
 
 
 /**
  * 下载一个文件
  */
-export let download = async (url, file) => {
+export async function download (url, file) {
   // ensure
   file = path.resolve(file);
   fs.ensureDirSync(path.dirname(file));
@@ -65,26 +65,26 @@ export let download = async (url, file) => {
       .on('error', reject)
       .pipe(s)
       .on('error', reject)
-      .on('finish', function() {
-        this.close(function() {
+      .on('finish', function () {
+        this.close(function () {
           resolve();
         });
       });
   });
-};
+}
 
 /**
  * 下载一首歌曲
  */
-export let downloadSong = async (url, filename, song, totalLength) => {
-  try{
+export async function downloadSong (url, filename, song, totalLength) {
+  try  {
     await download(song.url, filename);
     console.log(`${ symbolsSuccess } ${ song.index }/${ totalLength } 下载完成 ${ filename }`);
-  } catch (e){
+  } catch (e) {
     console.log(`${ symbolsError } ${ song.index }/${ totalLength } 下载失败 ${ filename }`);
     console.error(e.stack || e);
   }
-};
+}
 
 /**
  * check page type
@@ -92,17 +92,17 @@ export let downloadSong = async (url, filename, song, totalLength) => {
  * @param { String } url
  * @return { Object } {type, typeText}
  */
-export let getType = url => {
-  for (var i = 0; i < types.length; i++) {
-    var item = types[i];
+export function getType (url) {
+  for (let i = 0; i < types.length; i++) {
+    let item = types[i];
     if (url.indexOf(item.type) > -1) {
       return item;
     }
   }
 
-  var msg = 'unsupported type';
+  let msg = 'unsupported type';
   throw new Error(msg);
-};
+}
 
 /**
  * get a adapter via `url`
@@ -117,47 +117,47 @@ export let getType = url => {
  *   }
  * }
  */
-export let getAdapter = url => {
-  var type = exports.getType(url);
-  var typeKey = type.type;
+export function getAdapter (url) {
+  let type = exports.getType(url);
+  let typeKey = type.type;
   return require('./' + typeKey);
-};
+}
 
 /**
  * 获取title
  */
-exports.getTitle = function($, url) {
-  var adapter = exports.getAdapter(url);
+export function getTitle ($, url) {
+  const adapter = exports.getAdapter(url);
   return adapter.getTitle($);
-};
+}
 
 /**
  * 获取歌曲
  */
-exports.getSongs = co.wrap(function*($, url) {
-  var adapter = exports.getAdapter(url);
+export function getSongs ($, url) {
+  const adapter = exports.getAdapter(url);
 
   // 在 playlist 页面有一个 textarea 标签
   // 包含playlist 的详细信息
-  var text = $('ul.f-hide').next('textarea').html();
-  var songs = JSON.parse(text);
+  let text = $('ul.f-hide').next('textarea').html();
+  let songs = JSON.parse(text);
 
   // 根据详细信息获取歌曲
   return adapter.getSongs(songs);
-});
+}
 
 /**
  * 获取歌曲文件表示
  */
-exports.getFileName = options => {
-  var format = options.format;
-  var song = options.song;
-  var typesItem = exports.getType(options.url);
-  var name = options.name; // 专辑 or playlist 名称
+export function getFileName (options) {
+  let format = options.format;
+  let song = options.song;
+  let typesItem = getType(options.url);
+  let name = options.name; // 专辑 or playlist 名称
 
   // 从 type 中取值, 先替换 `长的`
   [
-    'typeText', 'type',
+    'typeText', 'type'
   ].forEach(t => {
     format = format.replace(new RegExp(':' + t, 'ig'), typesItem[t]);
   });
@@ -166,7 +166,7 @@ exports.getFileName = options => {
   [
     'songName', 'rawIndex',
     'index',
-    'singer', 'ext',
+    'singer', 'ext'
   ].forEach(t => {
     // t -> token
     format = format.replace(new RegExp(':' + t, 'ig'), song[t]);
@@ -176,4 +176,4 @@ exports.getFileName = options => {
   format = format.replace(new RegExp(':name', 'ig'), name);
 
   return format;
-};
+}
