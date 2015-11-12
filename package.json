@@ -41,6 +41,9 @@
     "superagent-bluebird-promise": "^2.0.2"
   },
   "devDependencies": {
+    "esformatter": "^0.8.1",
+    "esformatter-jsx": "^2.3.9",
+    "esformatter-quotes": "^1.0.3",
     "eslint": "^1.7.3"
   }
 }

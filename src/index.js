@@ -30,7 +30,7 @@ export const types = [{
 /**
  * 获取html
  */
-export async function getHtml (url) {
+export async function getHtml(url) {
   let res = await request
     .get(url)
     .promise();
@@ -44,7 +44,7 @@ export async function getHtml (url) {
  * to
  * http://music.163.com/playlist?id=12583200
  */
-export async function normalizeUrl (url) {
+export async function normalizeUrl(url) {
   return url.replace(/(https?:.*?\/)(#\/)/, '$1');
 }
 
@@ -52,12 +52,12 @@ export async function normalizeUrl (url) {
 /**
  * 下载一个文件
  */
-export async function download (url, file) {
+export async function download(url, file) {
   // ensure
   file = path.resolve(file);
   fs.ensureDirSync(path.dirname(file));
 
-  await new Promise((resolve, reject) => {
+    await new Promise((resolve, reject) => {
     let s = fs.createWriteStream(file);
     request
       .get(url)
@@ -65,8 +65,8 @@ export async function download (url, file) {
       .on('error', reject)
       .pipe(s)
       .on('error', reject)
-      .on('finish', function () {
-        this.close(function () {
+      .on('finish', function() {
+        this.close(function() {
           resolve();
         });
       });
@@ -76,8 +76,8 @@ export async function download (url, file) {
 /**
  * 下载一首歌曲
  */
-export async function downloadSong (url, filename, song, totalLength) {
-  try  {
+export async function downloadSong(url, filename, song, totalLength) {
+  try {
     await download(song.url, filename);
     console.log(`${ symbolsSuccess } ${ song.index }/${ totalLength } 下载完成 ${ filename }`);
   } catch (e) {
@@ -92,7 +92,7 @@ export async function downloadSong (url, filename, song, totalLength) {
  * @param { String } url
  * @return { Object } {type, typeText}
  */
-export function getType (url) {
+export function getType(url) {
   for (let i = 0; i < types.length; i++) {
     let item = types[i];
     if (url.indexOf(item.type) > -1) {
@@ -117,7 +117,7 @@ export function getType (url) {
  *   }
  * }
  */
-export function getAdapter (url) {
+export function getAdapter(url) {
   let type = exports.getType(url);
   let typeKey = type.type;
   return require('./' + typeKey);
@@ -126,7 +126,7 @@ export function getAdapter (url) {
 /**
  * 获取title
  */
-export function getTitle ($, url) {
+export function getTitle($, url) {
   const adapter = exports.getAdapter(url);
   return adapter.getTitle($);
 }
@@ -134,7 +134,7 @@ export function getTitle ($, url) {
 /**
  * 获取歌曲
  */
-export function getSongs ($, url) {
+export function getSongs($, url) {
   const adapter = exports.getAdapter(url);
 
   // 在 playlist 页面有一个 textarea 标签
@@ -149,7 +149,7 @@ export function getSongs ($, url) {
 /**
  * 获取歌曲文件表示
  */
-export function getFileName (options) {
+export function getFileName(options) {
   let format = options.format;
   let song = options.song;
   let typesItem = getType(options.url);

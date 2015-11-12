@@ -1,0 +1,10 @@
+{
+  "root": true,
+  "plugins": [
+    "esformatter-quotes",
+    "esformatter-jsx"
+  ],
+  "quotes": {
+    "type": "single"
+  }
+}

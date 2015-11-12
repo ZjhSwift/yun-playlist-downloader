@@ -5,7 +5,6 @@
  */
 export { getSongs } from './playlist';
 
-
-export function getTitle ($) {
+export function getTitle($) {
   return $('h2.f-ff2').text();
 }
