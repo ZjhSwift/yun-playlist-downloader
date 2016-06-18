@@ -10,6 +10,7 @@ const pmap = require('promise.map');
 const debug = require('debug')('yun:cli');
 const humanizeDuration = require('humanize-duration');
 const _ = require('lodash');
+const list = new (require('listr'))();
 const lib = require('../lib');
 const pkgVersion = require('../package.json').version;
 
@@ -120,6 +121,7 @@ co(function*() {
 
   // FIXME
   // process.exit();
+  list.run();
 
   // 开始下载
   yield pmap(songs, song => {
@@ -134,7 +136,8 @@ co(function*() {
     // 下载
     return lib.tryDownloadSong(
       song.url, filename, song, songs.length,
-      timeout, maxTimes, skipExists
+      timeout, maxTimes, skipExists,
+      list
     );
   }, concurrency);
 
