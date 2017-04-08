@@ -1,4 +1,6 @@
 # yun-playlist-downloader
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/magicdawn/yun-playlist-downloader.svg)](https://greenkeeper.io/)
 网易云音乐 - 歌单 - 下载器
 
 [![npm version](https://img.shields.io/npm/v/yun-playlist-downloader.svg?style=flat-square)](#)
